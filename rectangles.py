@@ -13,6 +13,10 @@ class drawRect:
         if self.scale:
             pos = tuple(map(lambda a: a*self.scale, pos))
             size = tuple(map(lambda a: a*self.scale, size))
+            if self.shift:
+                x,y = pos
+                x -= self.shift
+                pos = x,y
         self.pos = pos
         self.size = size
         # Draw rect if it has colors
