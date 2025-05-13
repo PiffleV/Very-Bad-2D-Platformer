@@ -10,7 +10,7 @@ def draw():
     global floor
     global roof
     global plat1
-    window.fill((0,155,0))
+    window.fill((100,206,235))
     floor = drawRect(window, (0, 1080/4*3), (1920, 1080/4), scale = scale, shift = shift, texture = 'images\\dirt.jpg')
     roof = drawRect(window, (1920/4*1.5, 610), (1920/4, 10), scale = scale, shift = shift, texture = 'images\\dirt.jpg')
     plat1 = drawRect(window, (2000, 1080/4*3), (10, 1080/4), scale = scale, shift = shift, texture = 'images\\dirt.jpg')
