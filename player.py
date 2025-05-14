@@ -10,6 +10,9 @@ class Player:
         self.grav = 0
         self.center = 200
         self.grounded = False
+        self.jumpcount = 1
+        self.jumplimit = 1
+        self.level = 1
     def draw(self, window: pygame.Surface, scale: int):
         player = drawRect(window, (self.x, self.y), (40, 100), color = (255,255,255), scale = scale)
         self.rect = player.rect
