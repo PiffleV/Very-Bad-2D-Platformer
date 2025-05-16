@@ -45,6 +45,11 @@ while drawing:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             drawing = False
+    # Collide items
+    if player.level == 1:
+        collide = [floor, roof, plat1,]
+    elif player.level == 2:
+        collide = [floor, plat1, plat2, plat3, plat4]
     # Interactions
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
@@ -90,11 +95,6 @@ while drawing:
                 shift = 0
     # Draw to get movement hitboxes
     draw()
-    # Collide items
-    if player.level == 1:
-        collide = [floor, roof, plat1,]
-    elif player.level == 2:
-        collide = [floor, plat1, plat2, plat3, plat4]
     # Grounded check
     for i in collide:
         if not player.rect.colliderect(i.rect):
@@ -142,20 +142,18 @@ while drawing:
             elif collide_side == Direction.LEFT:
                 shift -= 10*scale
                 player.x = player.center *scale
-                i_x, i_y = i.pos
                 if i.texture:
-                    i = drawRect(window, (i_x - shift, i_y), i.size, texture = i.texture)
+                    i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, texture = i.texture)
                 elif i.color:
-                    i = drawRect(window, (i_x - shift, i_y), i.size, color = i.texture)
+                    i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, color = i.color)
                 player.draw(window, scale)
             elif collide_side == Direction.RIGHT:
                 shift += 10*scale
                 player.x = player.center*scale
-                i_x, i_y = i.pos
                 if i.texture:
-                    i = drawRect(window, (i_x - shift, i_y), i.size, texture = i.texture)
+                    i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, texture = i.texture)
                 elif i.color:
-                    i = drawRect(window, (i_x - shift, i_y), i.size, color = i.texture)
+                    i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, color = i.color)
                 player.draw(window, scale)
             elif not collide_side:
                 break
