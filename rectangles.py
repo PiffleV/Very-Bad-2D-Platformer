@@ -29,5 +29,5 @@ class drawRect:
             rect = pygame.Rect(pos, size)
             pygame.draw.rect(window, (0,0,0), rect)
             self.rect = rect
-            image = pygame.transform.scale(pygame.image.load(self.texture), size)
+            image = pygame.transform.scale(self.texture, size)
             window.blit(image, pos)

@@ -5,22 +5,27 @@ from rectangles import drawRect
 from player import Player
 from direction import Direction
 pygame.init()
+# cache images
+images = {
+    "grass": pygame.image.load('images\\grass.jpg'),
+    "dirt": pygame.image.load('images\\dirt.jpg')
+}
 # Def draw everything to recalculate collisions
 def draw():
     global floor, roof, plat1, win, plat2, plat3, plat4
     window.fill((100,206,235))
     player.draw(window, scale)
     if player.level == 1:
-        floor = drawRect(window, (0, 1080/4*3), (1920, 1080/4), scale = scale, shift = shift, texture = 'images\\grass.jpg')
-        roof = drawRect(window, (720, 610), (1920/4, 10), scale = scale, shift = shift, texture = 'images\\grass.jpg')
-        plat1 = drawRect(window, (2350, 1080/4*3), (10, 1080/4), scale = scale, shift = shift, texture = 'images\\grass.jpg')
+        floor = drawRect(window, (0, 1080/4*3), (1920, 1080/4), scale = scale, shift = shift, texture = images["grass"])
+        roof = drawRect(window, (720, 610), (1920/4, 10), scale = scale, shift = shift, texture = images["grass"])
+        plat1 = drawRect(window, (2350, 1080/4*3), (10, 1080/4), scale = scale, shift = shift, texture = images["grass"])
         win = drawRect(window, (2410, 1080/4*3), (50,50), scale = scale, shift = shift, color = (255,255,0))
     elif player.level == 2:
-        floor = drawRect(window, (0, 1080/4*3), (1920, 1080/4), scale = scale, shift = shift, texture = 'images\\grass.jpg')
-        plat1 = drawRect(window, (1920/3,0), (10, 620), scale = scale, shift = shift, texture = 'images\\dirt.jpg')
-        plat2 = drawRect(window, (1920/3+200,0), (10, 620), scale = scale, shift = shift, texture = 'images\\dirt.jpg')
-        plat3 = drawRect(window, (1920/3,620), (100, 10), scale = scale, shift = shift, texture = 'images\\dirt.jpg')
-        plat4 = drawRect(window, (1920/3+100,420), (100, 10), scale = scale, shift = shift, texture = 'images\\dirt.jpg')
+        floor = drawRect(window, (0, 1080/4*3), (1920, 1080/4), scale = scale, shift = shift, texture = images["grass"])
+        plat1 = drawRect(window, (1920/3,0), (10, 620), scale = scale, shift = shift, texture = images["dirt"])
+        plat2 = drawRect(window, (1920/3+200,0), (10, 620), scale = scale, shift = shift, texture = images["dirt"])
+        plat3 = drawRect(window, (1920/3,620), (100, 10), scale = scale, shift = shift, texture = images["dirt"])
+        plat4 = drawRect(window, (1920/3+100,420), (100, 10), scale = scale, shift = shift, texture = images["dirt"])
     player.draw(window, scale)
 # Scale window to screen
 height = pygame.display.Info().current_h
@@ -59,37 +64,37 @@ while drawing:
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             shift -= 10*scale
             # Help the illusion
-            if player.x > player.center*scale - 10*scale:
-                player.x -= 5*scale
+            if player.x > player.center - 10:
+                player.x -= 5
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             shift += 10*scale
             # Help the illusion
-            if player.x < player.center*scale + 10*scale:
-                player.x += 5*scale
+            if player.x < player.center + 10:
+                player.x += 5
         # Jump
         if keys[pygame.K_UP] or keys[pygame.K_w]:
             if player.grounded:
                 if player.jumpcount > 0:
-                    player.grav = -20*scale
+                    player.grav = -20
                     player.jumpcount -= 1
             else:
                 if player.jumpcount > 1:
-                    player.grav = -20*scale
+                    player.grav = -20
                     player.jumpcount -= 1
         # Send player to center
-        if player.x > player.center*scale and not (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
-            player.x -= 5*scale
-        if player.x < player.center*scale and not (keys[pygame.K_LEFT] or keys[pygame.K_a]):
-            player.x += 5*scale
+        if player.x > player.center and not (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
+            player.x -= 5
+        if player.x < player.center and not (keys[pygame.K_LEFT] or keys[pygame.K_a]):
+            player.x += 5
         # Gravity
         player.y += player.grav
         if not player.grounded:
-            if player.grav < 15*scale:
-                player.grav += 1*scale
+            if player.grav < 15:
+                player.grav += 1
     # Restart
     if game_over:
             if keys[pygame.K_SPACE]:
-                player.x, player.y = (200*scale,0)
+                player.x, player.y = (200,0)
                 player.draw(window, scale)
                 game_over = False
                 shift = 0
@@ -101,33 +106,22 @@ while drawing:
             player.grounded = False
     # Collision
     collide_side = None
+    y_move = 0
     for i in collide:
         if player.rect.colliderect(i.rect):
             # Check which side it is colliding with by moving the player
-            original_x, original_y = player.x, player.y
             
-            player.x = original_x - 20*scale
-            player.draw(window, scale)
-            if not player.rect.colliderect(i.rect):
+            if not player.rect.move(-20,0).colliderect(i.rect):
                 collide_side = Direction.LEFT
 
-            player.x = original_x + 20*scale
-            player.draw(window, scale)
-            if not player.rect.colliderect(i.rect):
+            if not player.rect.move(20,0).colliderect(i.rect):
                 collide_side = Direction.RIGHT
-            player.x = original_x
 
-            player.y = original_y - 20*scale
-            player.draw(window, scale)
-            if not player.rect.colliderect(i.rect):
+            if not player.rect.move(0,-20).colliderect(i.rect):
                 collide_side = Direction.UP
 
-            player.y = original_y + 20*scale
-            player.draw(window, scale)
-            if not player.rect.colliderect(i.rect):
+            if not player.rect.move(0,20).colliderect(i.rect):
                 collide_side = Direction.DOWN
-            player.y = original_y
-            player.draw(window, scale)
         while player.rect.colliderect(i.rect):
             if collide_side == Direction.UP:
                 player.y -= 1
@@ -141,7 +135,7 @@ while drawing:
                     player.grav *= -1
             elif collide_side == Direction.LEFT:
                 shift -= 10*scale
-                player.x = player.center *scale
+                player.x = player.center
                 if i.texture:
                     i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, texture = i.texture)
                 elif i.color:
@@ -149,7 +143,7 @@ while drawing:
                 player.draw(window, scale)
             elif collide_side == Direction.RIGHT:
                 shift += 10*scale
-                player.x = player.center*scale
+                player.x = player.center
                 if i.texture:
                     i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, texture = i.texture)
                 elif i.color:
@@ -157,6 +151,7 @@ while drawing:
                 player.draw(window, scale)
             elif not collide_side:
                 break
+        player.y += y_move
     # Draw for graphics
     draw()
     # Kill code
@@ -171,14 +166,14 @@ while drawing:
         game_over = True
     # Win code
     if player.rect.colliderect(win.rect):
-        player.x, player.y = (200*scale,0)
+        player.x, player.y = (200,0)
         player.draw(window, scale)
         game_over = False
         shift = 0
         for i in collide:
             i.rect.topleft = (-2147483648, -2147483648)
-            draw()
         player.level += 1
+        draw()
     # tutorial
     if tutorial:
         draw()

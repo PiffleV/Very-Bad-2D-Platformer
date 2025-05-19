@@ -13,6 +13,6 @@ class Player:
         self.jumpcount = 1
         self.jumplimit = 1
         self.level = 1
-    def draw(self, window: pygame.Surface, scale: int):
-        player = drawRect(window, (self.x, self.y), (40, 100), texture = "images\\char.jpg", scale = scale)
+    def draw(self, window: pygame.Surface, scale: float):
+        player = drawRect(window, (self.x, self.y), (40, 100), texture = pygame.image.load('images\\char.jpg'), scale = scale)
         self.rect = player.rect
