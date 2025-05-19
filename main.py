@@ -11,17 +11,17 @@ def draw():
     window.fill((100,206,235))
     player.draw(window, scale)
     if player.level == 1:
-        floor = drawRect(window, (0, 1080/4*3), (1920, 1080/4), scale = scale, shift = shift, texture = images["grass"])
+        floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = images["grass"])
         roof = drawRect(window, (720, 610), (1920/4, 10), scale = scale, shift = shift, texture = images["grass"])
-        plat1 = drawRect(window, (2350, 1080/4*3), (10, 1080/4), scale = scale, shift = shift, texture = images["grass"])
-        win = drawRect(window, (2410, 1080/4*3), (50,50), scale = scale, shift = shift, color = (255,255,0))
+        plat1 = drawRect(window, (2350, 810), (10, 270), scale = scale, shift = shift, texture = images["grass"])
+        win = drawRect(window, (2410, 810), (50,50), scale = scale, shift = shift, color = (255,255,0))
     elif player.level == 2:
-        floor = drawRect(window, (0, 1080/4*3), (1920, 1080/4), scale = scale, shift = shift, texture = images["grass"])
-        plat1 = drawRect(window, (1920/3,0), (10, 620), scale = scale, shift = shift, texture = images["dirt"])
-        plat2 = drawRect(window, (1920/3+200,0), (10, 620), scale = scale, shift = shift, texture = images["dirt"])
-        plat3 = drawRect(window, (1920/3,620), (100, 10), scale = scale, shift = shift, texture = images["dirt"])
-        plat4 = drawRect(window, (1920/3+100,420), (100, 10), scale = scale, shift = shift, texture = images["dirt"])
-        win = drawRect(window, (1920/3+85, 100), (50,50), scale = scale, shift = shift, color = (255,255,0))
+        floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = images["grass"])
+        plat1 = drawRect(window, (640,0), (10, 620), scale = scale, shift = shift, texture = images["dirt"])
+        plat2 = drawRect(window, (840,0), (10, 620), scale = scale, shift = shift, texture = images["dirt"])
+        plat3 = drawRect(window, (640,620), (100, 10), scale = scale, shift = shift, texture = images["dirt"])
+        plat4 = drawRect(window, (740,420), (100, 10), scale = scale, shift = shift, texture = images["dirt"])
+        win = drawRect(window, (725, 100), (50,50), scale = scale, shift = shift, color = (255,255,0))
     player.draw(window, scale)
 # Scale window to screen
 height = pygame.display.Info().current_h
@@ -126,49 +126,42 @@ while drawing:
                 collide_side = Direction.UP
 
             if not player.rect.move(0,20).colliderect(i.rect):
-                collide_side = Direction.DOWN
-        while player.rect.colliderect(i.rect):
-            if collide_side == Direction.UP:
-                player.y -= 1
-                player.draw(window, scale)
-                player.grounded = True
-                player.jumpcount = player.jumplimit
-            elif collide_side == Direction.DOWN:
-                player.y += 1
-                player.draw(window, scale)
-                if player.grav < 0:
-                    player.grav *= -1
-            elif collide_side == Direction.LEFT:
-                shift -= 1*scale
+                    collide_side = Direction.DOWN
+            y_move = 0
+            x_move = 0
+            if collide_side == Direction.LEFT or collide_side == Direction.RIGHT:
                 player.x = player.center
-                if i.texture:
-                    i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, texture = i.texture)
-                elif i.color:
-                    i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, color = i.color)
                 player.draw(window, scale)
-            elif collide_side == Direction.RIGHT:
-                shift += 1*scale
-                player.x = player.center
-                if i.texture:
-                    i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, texture = i.texture)
-                elif i.color:
-                    i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, color = i.color)
-                player.draw(window, scale)
-            elif not collide_side:
-                break
-        player.y += y_move
+            while player.rect.colliderect(i.rect):
+                if collide_side == Direction.UP:
+                    player.rect.move_ip(0,-1)
+                    y_move -= 1
+                    player.grounded = True
+                    player.jumpcount = player.jumplimit
+                elif collide_side == Direction.DOWN:
+                    player.rect.move_ip(0,1)
+                    y_move += 1
+                    if player.grav < 0:
+                        player.grav *= -1
+                elif collide_side == Direction.LEFT:
+                    i.rect.move_ip(1,0)
+                    x_move -= 1
+                elif collide_side == Direction.RIGHT:
+                    i.rect.move_ip(-1,0)
+                    x_move += 1
+                elif not collide_side:
+                    break
+            player.y += y_move
+            shift += x_move
     # Draw for graphics
     draw()
     collision_frame = (pygame.time.get_ticks() - start_frame)
     # Kill code
-    x, y = window.get_size()
-    if player.rect.top > y:
+    if player.rect.top > window.get_size()[1]:
         game_over_rect = death_font.get_rect("Game Over!")
         restart_rect = start_font.get_rect("Press space to restart.")
-        x1, y1 = game_over_rect.center
-        death_font.render_to(window, (x/2-x1, 100*scale), "Game Over!")
-        x2, y2 = restart_rect.center
-        start_font.render_to(window, (x/2-x2, (game_over_rect.bottom+50)*scale), "Press space to restart.")
+        death_font.render_to(window, (window.get_size()[0]/2-game_over_rect.center[0], 100*scale), "Game Over!")
+        start_font.render_to(window, (window.get_size()[0]/2-restart_rect.center[0], (game_over_rect.bottom+50)*scale), "Press space to restart.")
         game_over = True
     # Win code
     if player.rect.colliderect(win.rect):
@@ -182,11 +175,8 @@ while drawing:
         draw()
     # tutorial
     if tutorial:
-        draw()
         start_rect = start_font.get_rect("WASD or arrow keys to move")
-        x3, y3 = start_rect.center
-        x, _ = window.get_size()
-        start_font.render_to(window, (x/2-x3, 100*scale), "WASD or arrow keys to move")
+        start_font.render_to(window, (window.get_size()[0]/2-start_rect.center[0], 100*scale), "WASD or arrow keys to move")
         keys = pygame.key.get_pressed()
         for i in keys:
             if i:
