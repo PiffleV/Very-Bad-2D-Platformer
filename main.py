@@ -5,11 +5,6 @@ from rectangles import drawRect
 from player import Player
 from direction import Direction
 pygame.init()
-# cache images
-images = {
-    "grass": pygame.image.load('images\\grass.jpg'),
-    "dirt": pygame.image.load('images\\dirt.jpg')
-}
 # Def draw everything to recalculate collisions
 def draw():
     global floor, roof, plat1, win, plat2, plat3, plat4
@@ -33,6 +28,11 @@ height = pygame.display.Info().current_h
 scale = height/1080
 window = pygame.display.set_mode([1920*scale,1080*scale])
 shift = 0
+# cache images
+images = {
+    "grass": pygame.image.load('images\\grass.jpg').convert_alpha(),
+    "dirt": pygame.image.load('images\\dirt.jpg').convert_alpha()
+}
 # Get player
 player = Player()
 # Clock
@@ -47,6 +47,8 @@ drawing = True
 game_over = False
 tutorial = True
 while drawing:
+    # for fps printing
+    start_frame = pygame.time.get_ticks()
     # Quit if quit
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -92,6 +94,7 @@ while drawing:
         if not player.grounded:
             if player.grav < 15:
                 player.grav += 1
+   
     # Restart
     if game_over:
             if keys[pygame.K_SPACE]:
@@ -101,6 +104,7 @@ while drawing:
                 shift = 0
     # Draw to get movement hitboxes
     draw()
+    move_frame = pygame.time.get_ticks() - start_frame
     # Grounded check
     for i in collide:
         if not player.rect.colliderect(i.rect):
@@ -155,6 +159,7 @@ while drawing:
         player.y += y_move
     # Draw for graphics
     draw()
+    collision_frame = (pygame.time.get_ticks() - start_frame)
     # Kill code
     x, y = window.get_size()
     if player.rect.top > y:
@@ -187,3 +192,7 @@ while drawing:
             if i:
                 tutorial = False
     pygame.display.flip()
+    c.tick(60)
+    end_frame = (pygame.time.get_ticks() - start_frame)
+    print("Fps: " + str(int(1000/(pygame.time.get_ticks() - start_frame))), "Movement: " + str(move_frame), "Collision: " + str(collision_frame), "End: " + str(end_frame), sep = ", ")
+    
