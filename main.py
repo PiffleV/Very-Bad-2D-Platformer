@@ -26,6 +26,7 @@ def draw():
         plat2 = drawRect(window, (1920/3+200,0), (10, 620), scale = scale, shift = shift, texture = images["dirt"])
         plat3 = drawRect(window, (1920/3,620), (100, 10), scale = scale, shift = shift, texture = images["dirt"])
         plat4 = drawRect(window, (1920/3+100,420), (100, 10), scale = scale, shift = shift, texture = images["dirt"])
+        win = drawRect(window, (1920/3+85, 100), (50,50), scale = scale, shift = shift, color = (255,255,0))
     player.draw(window, scale)
 # Scale window to screen
 height = pygame.display.Info().current_h
@@ -185,6 +186,4 @@ while drawing:
         for i in keys:
             if i:
                 tutorial = False
-        pygame.display.flip()
     pygame.display.flip()
-    c.tick(40)
