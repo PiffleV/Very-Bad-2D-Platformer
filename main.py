@@ -134,7 +134,7 @@ while drawing:
                 if player.grav < 0:
                     player.grav *= -1
             elif collide_side == Direction.LEFT:
-                shift -= 10*scale
+                shift -= 1*scale
                 player.x = player.center
                 if i.texture:
                     i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, texture = i.texture)
@@ -142,7 +142,7 @@ while drawing:
                     i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, color = i.color)
                 player.draw(window, scale)
             elif collide_side == Direction.RIGHT:
-                shift += 10*scale
+                shift += 1*scale
                 player.x = player.center
                 if i.texture:
                     i = drawRect(window, i.pos, i.size, scale = scale, shift = shift, texture = i.texture)

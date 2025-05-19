@@ -9,6 +9,8 @@ class drawRect:
         self.texture = kwargs.get("texture", None)
         self.scale = kwargs.get("scale", None)
         self.shift = kwargs.get("shift", None)
+        self.pos = pos
+        self.size = size
         # Scale everything
         if self.scale:
             pos = tuple(map(lambda a: a*self.scale, pos))
@@ -17,8 +19,6 @@ class drawRect:
                 x,y = pos
                 x -= self.shift
                 pos = x,y
-        self.pos = pos
-        self.size = size
         # Draw rect if it has colors
         if self.color:
             rect = pygame.Rect(pos, size)
