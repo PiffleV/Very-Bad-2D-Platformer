@@ -183,6 +183,5 @@ while drawing:
                 tutorial = False
     pygame.display.flip()
     c.tick(60)
-    end_frame = (pygame.time.get_ticks() - start_frame)
-    print("Fps: " + str(int(1000/(pygame.time.get_ticks() - start_frame))), "Movement: " + str(move_frame), "Collision: " + str(collision_frame), "End: " + str(end_frame), sep = ", ")
+    print("Fps: " + str(int(1000/(pygame.time.get_ticks() - start_frame))), "Movement: " + str(move_frame), "Collision: " + str(collision_frame), sep = ", ")
     
