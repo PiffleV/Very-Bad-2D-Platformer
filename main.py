@@ -6,15 +6,19 @@ from player import Player
 from direction import Direction
 pygame.init()
 # Def draw everything to recalculate collisions
-def draw():
+def draw(images):
     global floor, roof, plat1, win, plat2, plat3, plat4
     window.fill((100,206,235))
     player.draw(window, scale)
     if player.level == 1:
-        floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = images["grass"])
-        roof = drawRect(window, (720, 610), (1920/4, 10), scale = scale, shift = shift, texture = images["grass"])
-        plat1 = drawRect(window, (2350, 810), (10, 270), scale = scale, shift = shift, texture = images["grass"])
+        floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
+        roof = drawRect(window, (720, 610), (1920/4, 10), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
+        plat1 = drawRect(window, (2350, 810), (10, 270), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
         win = drawRect(window, (2410, 810), (50,50), scale = scale, shift = shift, color = (255,255,0))
+        for i in (floor, roof, plat1, win):
+            if i.image:
+                if not (i.texture, i.size_scaled) in images:
+                    images[(i.texture, i.size_scaled)] = i.image
     elif player.level == 2:
         floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = images["grass"])
         plat1 = drawRect(window, (640,0), (10, 620), scale = scale, shift = shift, texture = images["dirt"])
@@ -41,7 +45,7 @@ c = pygame.time.Clock()
 death_font = pygame.freetype.Font("ShareTech-Regular.ttf",200*scale)
 start_font = pygame.freetype.Font("ShareTech-Regular.ttf",100*scale)
 # Draw to stop crashes
-draw()
+draw(images)
 # Main loop
 drawing = True
 game_over = False
@@ -103,7 +107,7 @@ while drawing:
                 game_over = False
                 shift = 0
     # Draw to get movement hitboxes
-    draw()
+    draw(images)
     move_frame = pygame.time.get_ticks() - start_frame
     # Grounded check
     for i in collide:
@@ -154,7 +158,7 @@ while drawing:
             player.y += y_move
             shift += x_move
     # Draw for graphics
-    draw()
+    draw(images)
     collision_frame = (pygame.time.get_ticks() - start_frame)
     # Kill code
     if player.rect.top > window.get_size()[1]:
@@ -172,7 +176,7 @@ while drawing:
         for i in collide:
             i.rect.topleft = (-2147483648, -2147483648)
         player.level += 1
-        draw()
+        draw(images)
     # tutorial
     if tutorial:
         start_rect = start_font.get_rect("WASD or arrow keys to move")

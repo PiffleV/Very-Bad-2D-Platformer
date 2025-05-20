@@ -9,8 +9,11 @@ class drawRect:
         self.texture = kwargs.get("texture", None)
         self.scale = kwargs.get("scale", None)
         self.shift = kwargs.get("shift", None)
+        self.cache = kwargs.get("cache", None)
         self.pos = pos
         self.size = size
+        self.image = None
+        self.size_scaled = size
         # Scale everything
         if self.scale:
             pos = tuple(map(lambda a: a*self.scale, pos))
@@ -19,6 +22,7 @@ class drawRect:
                 x,y = pos
                 x -= self.shift
                 pos = x,y
+            self.size_scaled = size
         # Draw rect if it has colors
         if self.color:
             rect = pygame.Rect(pos, size)
@@ -28,5 +32,12 @@ class drawRect:
         if self.texture:
             rect = pygame.Rect(pos, size)
             self.rect = rect
-            image = pygame.transform.scale(self.texture, size)
+            if self.cache:
+                if (self.texture, size) in self.cache:
+                    image = self.cache[(self.texture, size)]
+                else:
+                    image = pygame.transform.scale(pygame.image.load(self.texture), size)
+            else:
+                image = pygame.transform.scale(self.texture, size)
+            self.image = image
             window.blit(image, pos)
