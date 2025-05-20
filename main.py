@@ -7,11 +7,11 @@ from direction import Direction
 pygame.init()
 # Def draw everything to recalculate collisions
 def draw(images):
-    global floor, roof, plat1, win, plat2, plat3, plat4, jump
+    global floor, roof, plat1, win, plat2, plat3, plat4, jump, plat5
     window.fill((100,206,235))
     player.draw(window, scale)
     match player.level:
-        case 1:
+        case 1: # beginning
             floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
             roof = drawRect(window, (720, 610), (1920/4, 10), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
             plat1 = drawRect(window, (2350, 810), (10, 270), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
@@ -20,7 +20,7 @@ def draw(images):
                 if i.image:
                     if not (i.texture, i.size_scaled) in images:
                         images[(i.texture, i.size_scaled)] = i.image
-        case 2:
+        case 2: # corridor
             floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
             plat1 = drawRect(window, (640,0), (10, 620), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
             plat2 = drawRect(window, (840,0), (10, 620), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
@@ -31,7 +31,7 @@ def draw(images):
                 if i.image:
                     if not (i.texture, i.size_scaled) in images:
                         images[(i.texture, i.size_scaled)] = i.image
-        case 3:
+        case 3: # go left
             floor = drawRect(window, (-100, 300), (2020, 100), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
             plat1 = drawRect(window, (0, 1080-20), (1920, 20), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
             plat2 = drawRect(window, (1910, 0), (10, 300), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
@@ -40,18 +40,19 @@ def draw(images):
                 if i.image:
                     if not (i.texture, i.size_scaled) in images:
                         images[(i.texture, i.size_scaled)] = i.image
-        case 4:
+        case 4: # clip through the floor
             floor = drawRect(window, (-100, 300), (2020, 100), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
             plat1 = drawRect(window, (0, 1080-20), (1920, 20), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
             plat2 = drawRect(window, (1910, 0), (10, 300), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
             plat3 = drawRect(window, (-100, 0), (10, 300), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
             plat4 = drawRect(window, (1900, 195), (10, 10), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
+            plat5 = drawRect(window, (-100,0), (2020, 10), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
             win = drawRect(window, (1920/2-25, 1080-70), (50,50), scale = scale, shift = shift, color = (255,255,0))
-            for i in (floor, plat1, plat2, plat3, plat4):
+            for i in (floor, plat1, plat2, plat3, plat4, plat5):
                 if i.image:
                     if not (i.texture, i.size_scaled) in images:
                         images[(i.texture, i.size_scaled)] = i.image
-        case 5:
+        case 5: # double jump!
             floor = drawRect(window, (-100, 300), (2020, 100), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
             plat1 = drawRect(window, (0, 1080-20), (1920, 20), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
             plat2 = drawRect(window, (1910, 0), (10, 300), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
@@ -63,10 +64,10 @@ def draw(images):
                 if i.image:
                     if not (i.texture, i.size_scaled) in images:
                         images[(i.texture, i.size_scaled)] = i.image
-        case 6:
+        case 6: # clip and jump
             floor = drawRect(window, (0, 1080-300), (2020, 250), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
             plat1 = drawRect(window, (100, 1080-405), (10, 10), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
-            win = drawRect(window, (110+400, 1080-50), (50,50), scale = scale, shift = shift, color = (255,255,0))
+            win = drawRect(window, (110+420, 1080-50), (50,50), scale = scale, shift = shift, color = (255,255,0))
             for i in (floor, plat1):
                 if i.image:
                     if not (i.texture, i.size_scaled) in images:
@@ -111,7 +112,7 @@ while drawing:
         case 3:
             collide = [floor, plat1,plat2]
         case 4:
-            collide = [floor, plat1, plat2, plat3, plat4]
+            collide = [floor, plat1, plat2, plat3, plat4, plat5]
         case 5:
             collide = [floor, plat1, plat2, plat3]
         case 6:
