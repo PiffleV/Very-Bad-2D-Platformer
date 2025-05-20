@@ -20,11 +20,11 @@ def draw(images):
                 if not (i.texture, i.size_scaled) in images:
                     images[(i.texture, i.size_scaled)] = i.image
     elif player.level == 2:
-        floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = images["grass"])
-        plat1 = drawRect(window, (640,0), (10, 620), scale = scale, shift = shift, texture = images["dirt"])
-        plat2 = drawRect(window, (840,0), (10, 620), scale = scale, shift = shift, texture = images["dirt"])
-        plat3 = drawRect(window, (640,620), (100, 10), scale = scale, shift = shift, texture = images["dirt"])
-        plat4 = drawRect(window, (740,420), (100, 10), scale = scale, shift = shift, texture = images["dirt"])
+        floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
+        plat1 = drawRect(window, (640,0), (10, 620), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
+        plat2 = drawRect(window, (840,0), (10, 620), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
+        plat3 = drawRect(window, (640,620), (100, 10), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
+        plat4 = drawRect(window, (740,420), (100, 10), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
         win = drawRect(window, (725, 100), (50,50), scale = scale, shift = shift, color = (255,255,0))
     player.draw(window, scale)
 # Scale window to screen
