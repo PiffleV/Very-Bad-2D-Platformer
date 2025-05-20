@@ -36,7 +36,7 @@ class drawRect:
                 if (self.texture, size) in self.cache:
                     image = self.cache[(self.texture, size)]
                 else:
-                    image = pygame.transform.scale(pygame.image.load(self.texture), size)
+                    image = pygame.transform.scale(pygame.image.load(self.texture).convert_alpha(), size)
             else:
                 image = pygame.transform.scale(self.texture, size)
             self.image = image

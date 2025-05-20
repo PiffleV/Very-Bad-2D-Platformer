@@ -26,6 +26,19 @@ def draw(images):
         plat3 = drawRect(window, (640,620), (100, 10), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
         plat4 = drawRect(window, (740,420), (100, 10), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
         win = drawRect(window, (725, 100), (50,50), scale = scale, shift = shift, color = (255,255,0))
+        for i in (floor, plat1, plat2, plat3, plat4, win):
+            if i.image:
+                if not (i.texture, i.size_scaled) in images:
+                    images[(i.texture, i.size_scaled)] = i.image
+    elif player.level == 3:
+        floor = drawRect(window, (-100, 300), (2020, 100), scale = scale, shift = shift, texture = "images\\grass.jpg", cache = images)
+        plat1 = drawRect(window, (0, 1080-10), (1920, 10), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
+        plat2 = drawRect(window, (1910, 0), (10, 300), scale = scale, shift = shift, texture = "images\\dirt.jpg", cache = images)
+        win = drawRect(window, (1920/2-25, 1080-70), (50,50), scale = scale, shift = shift, color = (255,255,0))
+        for i in (floor, plat1, plat2):
+            if i.image:
+                if not (i.texture, i.size_scaled) in images:
+                    images[(i.texture, i.size_scaled)] = i.image
     player.draw(window, scale)
 # Scale window to screen
 height = pygame.display.Info().current_h
@@ -34,8 +47,7 @@ window = pygame.display.set_mode([1920*scale,1080*scale])
 shift = 0
 # cache images
 images = {
-    "grass": pygame.image.load('images\\grass.jpg').convert_alpha(),
-    "dirt": pygame.image.load('images\\dirt.jpg').convert_alpha()
+    "":""
 }
 # Get player
 player = Player()
@@ -50,6 +62,7 @@ draw(images)
 drawing = True
 game_over = False
 tutorial = True
+skip = False
 while drawing:
     # for fps printing
     start_frame = pygame.time.get_ticks()
@@ -62,6 +75,8 @@ while drawing:
         collide = [floor, roof, plat1,]
     elif player.level == 2:
         collide = [floor, plat1, plat2, plat3, plat4]
+    elif player.level == 3:
+        collide = [floor, plat1]
     # Interactions
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
@@ -168,15 +183,19 @@ while drawing:
         start_font.render_to(window, (window.get_size()[0]/2-restart_rect.center[0], (game_over_rect.bottom+50)*scale), "Press space to restart.")
         game_over = True
     # Win code
-    if player.rect.colliderect(win.rect):
-        player.x, player.y = (200,0)
-        player.draw(window, scale)
-        game_over = False
-        shift = 0
-        for i in collide:
-            i.rect.topleft = (-2147483648, -2147483648)
-        player.level += 1
-        draw(images)
+    if player.rect.colliderect(win.rect) or (keys[pygame.K_p] and keys[pygame.K_f] and keys[pygame.K_l]):
+        if not skip:
+            player.x, player.y = (200,0)
+            player.draw(window, scale)
+            game_over = False
+            shift = 0
+            for i in collide:
+                i.rect.topleft = (-2147483648, -2147483648)
+            player.level += 1
+            draw(images)
+            skip = True
+    else:
+        skip = False
     # tutorial
     if tutorial:
         start_rect = start_font.get_rect("WASD or arrow keys to move")
