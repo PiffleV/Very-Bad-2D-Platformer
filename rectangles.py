@@ -18,11 +18,11 @@ class drawRect:
         if self.scale:
             pos = tuple(map(lambda a: a*self.scale, pos))
             size = tuple(map(lambda a: a*self.scale, size))
-            if self.shift:
-                x,y = pos
-                x -= self.shift
-                pos = x,y
-            self.size_scaled = size
+        if self.shift:
+            x,y = pos
+            x -= self.shift
+            pos = x,y
+        self.size_scaled = size
         # Draw rect if it has colors
         if self.color:
             rect = pygame.Rect(pos, size)

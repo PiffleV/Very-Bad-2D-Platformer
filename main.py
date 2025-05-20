@@ -5,6 +5,7 @@ from rectangles import drawRect
 from player import Player
 from direction import Direction
 pygame.init()
+c = pygame.time.Clock()
 # Def draw everything to recalculate collisions
 def draw(images):
     global floor, roof, plat1, win, plat2, plat3, plat4, jump, plat5
@@ -214,8 +215,9 @@ while drawing:
                     x_move += 1
                 elif not collide_side:
                     break
-            player.y += y_move
-            shift += x_move
+            else:
+                player.y += y_move
+                shift += x_move
     # Draw for graphics
     draw(images)
     collision_frame = (pygame.time.get_ticks() - start_frame)
@@ -260,5 +262,6 @@ while drawing:
             if i:
                 tutorial = False
     pygame.display.flip()
+    c.tick(30)
     print("Fps: " + str(int(1000/(pygame.time.get_ticks() - start_frame))), "Movement: " + str(move_frame), "Collision: " + str(collision_frame), sep = ", ")
     
