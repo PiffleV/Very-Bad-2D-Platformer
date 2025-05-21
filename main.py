@@ -298,17 +298,17 @@ while drawing:
     if player.rect.top > window.get_size()[1]:
         # Sound
         if not game_over:
-            sound = pygame.mixer.Sound('sounds\\vineboom.mp3')
+            sound = pygame.mixer.Sound(os.path.join("sound","vineboom.mp3"))
             sound.play() 
-        game_over_rect = death_font.get_rect("Game Over!")
+        game_over_rect = death_font.get_rect("You died.")
         restart_rect = start_font.get_rect("Press space to restart.")
-        death_font.render_to(window, (window.get_size()[0]/2-game_over_rect.center[0], 100*scale), "Game Over!")
+        death_font.render_to(window, (window.get_size()[0]/2-game_over_rect.center[0], 100*scale), "You died.")
         start_font.render_to(window, (window.get_size()[0]/2-restart_rect.center[0], (game_over_rect.bottom+50)*scale), "Press space to restart.")
         game_over = True
     # Win code
     if player.rect.colliderect(win.rect) or (keys[pygame.K_p] and keys[pygame.K_f] and keys[pygame.K_l]):
         if not skip:
-            sound = pygame.mixer.Sound('sounds\\cheer.mp3')
+            sound = pygame.mixer.Sound(os.path.join("sound","cheer.mp3"))
             sound.play() 
             player.x, player.y = (200,0)
             player.draw(window, scale)
@@ -336,8 +336,8 @@ while drawing:
         start_font.render_to(window, (window.get_size()[0]/2-start_rect.center[0], 100*scale), "WASD or arrow keys to move")
         win_rect = start_font.get_rect("Touch Yellow to move on.")
         start_font.render_to(window, (window.get_size()[0]/2-win_rect.center[0], (start_rect.bottom+50)*scale), "Touch Yellow to move on.")
-        jump_rect = start_font.get_rect("Blue lets you jump in the air")
-        start_font.render_to(window, (window.get_size()[0]/2-jump_rect.center[0], (win_rect.bottom+150)*scale), "Blue lets you jump in the air")
+        jump_rect = start_font.get_rect("Blue lets you double jump")
+        start_font.render_to(window, (window.get_size()[0]/2-jump_rect.center[0], (win_rect.bottom+150)*scale), "Blue lets you double jump")
         keys = pygame.key.get_pressed()
         for i in keys:
             if i:
