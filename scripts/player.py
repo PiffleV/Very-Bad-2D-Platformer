@@ -1,5 +1,5 @@
 # Get libraries
-from rectangles import drawRect
+from scripts.rectangles import drawRect
 import pygame
 import os
 pygame.init()

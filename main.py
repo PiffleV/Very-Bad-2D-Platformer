@@ -1,11 +1,13 @@
 # Library loading
 import pygame
 import pygame.freetype
+import pygame.mixer
 import os
-from rectangles import drawRect
-from player import Player
-from direction import Direction
+from scripts.rectangles import drawRect
+from scripts.player import Player
+from scripts.direction import Direction
 pygame.init()
+pygame.mixer.init()
 c = pygame.time.Clock()
 # Def draw everything to recalculate collisions
 def draw(images):
@@ -294,6 +296,10 @@ while drawing:
     draw(images)
     # Kill code
     if player.rect.top > window.get_size()[1]:
+        # Sound
+        if not game_over:
+            sound = pygame.mixer.Sound('sounds\\vineboom.mp3')
+            sound.play() 
         game_over_rect = death_font.get_rect("Game Over!")
         restart_rect = start_font.get_rect("Press space to restart.")
         death_font.render_to(window, (window.get_size()[0]/2-game_over_rect.center[0], 100*scale), "Game Over!")
@@ -302,6 +308,8 @@ while drawing:
     # Win code
     if player.rect.colliderect(win.rect) or (keys[pygame.K_p] and keys[pygame.K_f] and keys[pygame.K_l]):
         if not skip:
+            sound = pygame.mixer.Sound('sounds\\cheer.mp3')
+            sound.play() 
             player.x, player.y = (200,0)
             player.draw(window, scale)
             game_over = False
