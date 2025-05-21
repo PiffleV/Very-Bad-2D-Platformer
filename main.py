@@ -54,7 +54,7 @@ def draw(images):
             plat2 = drawRect(window, (1910, 0), (10, 300), scale = scale, shift = shift, texture = os.path.join("images","dirt.jpg"), cache = images)
             plat3 = drawRect(window, (-100, 0), (10, 300), scale = scale, shift = shift, texture = os.path.join("images","dirt.jpg"), cache = images)
             plat4 = drawRect(window, (1900, 195), (10, 10), scale = scale, shift = shift, texture = os.path.join("images","dirt.jpg"), cache = images)
-            plat5 = drawRect(window, (-100,0), (2020, 10), scale = scale, shift = shift, texture = os.path.join("images","dirt.jpg"), cache = images)
+            plat5 = drawRect(window, (-100,-10), (2020, 10), scale = scale, shift = shift, texture = os.path.join("images","dirt.jpg"), cache = images)
             win = drawRect(window, (1920/2-25, 1080-70), (50,50), scale = scale, shift = shift, color = (255,255,0))
             for i in (floor, plat1, plat2, plat3, plat4, plat5):
                 if i.image:
@@ -77,7 +77,7 @@ def draw(images):
             plat1 = drawRect(window, (100, 1080-405), (10, 10), scale = scale, shift = shift, texture = os.path.join("images","grass.jpg"), cache = images)
             win = drawRect(window, (110+420, 1080-50), (50,50), scale = scale, shift = shift, color = (255,255,0))
             if not collected:
-                jump = drawRect(window, (200, 200), (50,50), scale = scale, shift = shift, color = (0,0,255))
+                jump = drawRect(window, (200, 150), (50,50), scale = scale, shift = shift, color = (0,0,255))
             for i in (floor, plat1):
                 if i.image:
                     if not (i.texture, i.size_scaled) in images:
