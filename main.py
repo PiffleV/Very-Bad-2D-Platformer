@@ -298,7 +298,7 @@ while drawing:
     if player.rect.top > window.get_size()[1]:
         # Sound
         if not game_over:
-            sound = pygame.mixer.Sound("sound\\vineboom.mp3")
+            sound = pygame.mixer.Sound(os.path.join("sounds","vineboom.mp3"))
             sound.play() 
         game_over_rect = death_font.get_rect("You died.")
         restart_rect = start_font.get_rect("Press space to restart.")
@@ -308,7 +308,7 @@ while drawing:
     # Win code
     if player.rect.colliderect(win.rect) or (keys[pygame.K_p] and keys[pygame.K_f] and keys[pygame.K_l]):
         if not skip:
-            sound = pygame.mixer.Sound("sounds\\cheer.mp3")
+            sound = pygame.mixer.Sound(os.path.join("sounds","cheer.mp3"))
             sound.play() 
             player.x, player.y = (200,0)
             player.draw(window, scale)
