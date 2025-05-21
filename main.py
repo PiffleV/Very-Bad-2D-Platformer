@@ -82,7 +82,7 @@ def draw(images):
                         images[(i.texture, i.size_scaled)] = i.image
         case 7: # wall clip thing
             floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = os.path.join("images","grass.jpg"), cache = images)
-            plat1 = drawRect(window, (0, 610), (10, 200), scale = scale, shift = shift, texture = os.path.join("images","grass.jpg"), cache = images)
+            plat1 = drawRect(window, (0, 610), (10, 200), scale = scale, shift = shift, texture = os.path.join("images","dirt.jpg"), cache = images)
             plat2 = drawRect(window, (0, 360), (10, 250), scale = scale, shift = shift, texture = os.path.join("images","grass.jpg"), cache = images)
             win = drawRect(window, (0,0), (50,50), scale = scale, shift = shift, color = (255,255,0))
             for i in (floor, plat1, plat2):
@@ -112,7 +112,7 @@ def draw(images):
                 if i.image:
                     if not (i.texture, i.size_scaled) in images:
                         images[(i.texture, i.size_scaled)] = i.image
-        case 10:
+        case 10: #"maze"
             floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = os.path.join("images","grass.jpg"), cache = images)
             plat1 = drawRect(window, (300, 610), (1200, 200), scale = scale, shift = shift, texture = os.path.join("images","grass.jpg"), cache = images) 
             plat2 = drawRect(window, (400, 380), (50, 230), scale = scale, shift = shift, texture = os.path.join("images","dirt.jpg"), cache = images) 
