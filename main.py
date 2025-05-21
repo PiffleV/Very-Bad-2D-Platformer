@@ -84,7 +84,7 @@ def draw(images):
                         images[(i.texture, i.size_scaled)] = i.image
         case 7: # wall clip thing
             floor = drawRect(window, (0, 810), (1920, 270), scale = scale, shift = shift, texture = os.path.join("images","grass.jpg"), cache = images)
-            plat1 = drawRect(window, (0, 610), (10, 200), scale = scale, shift = shift, texture = os.path.join("images","dirt.jpg"), cache = images)
+            plat1 = drawRect(window, (0, 610), (10, 200), scale = scale, shift = shift, color = (64, 42, 5))
             plat2 = drawRect(window, (0, 360), (10, 250), scale = scale, shift = shift, texture = os.path.join("images","grass.jpg"), cache = images)
             win = drawRect(window, (0,0), (50,50), scale = scale, shift = shift, color = (255,255,0))
             for i in (floor, plat1, plat2):
@@ -298,7 +298,7 @@ while drawing:
     if player.rect.top > window.get_size()[1]:
         # Sound
         if not game_over:
-            sound = pygame.mixer.Sound(os.path.join("sound","vineboom.mp3"))
+            sound = pygame.mixer.Sound("sound\\vineboom.mp3")
             sound.play() 
         game_over_rect = death_font.get_rect("You died.")
         restart_rect = start_font.get_rect("Press space to restart.")
@@ -308,7 +308,7 @@ while drawing:
     # Win code
     if player.rect.colliderect(win.rect) or (keys[pygame.K_p] and keys[pygame.K_f] and keys[pygame.K_l]):
         if not skip:
-            sound = pygame.mixer.Sound(os.path.join("sound","cheer.mp3"))
+            sound = pygame.mixer.Sound("sounds\\cheer.mp3")
             sound.play() 
             player.x, player.y = (200,0)
             player.draw(window, scale)
