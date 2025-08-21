@@ -1,10 +1,9 @@
 # Information
-Just a project i made for CS1
-
-Fixed the speed :fire:
+Just a project I made for CS1
+Don't expect this game to be good, it was make 
 
 ## Installation
-Uhh
+If you don't have git or python you should probably get that
 ```
 git clone https://github.com/PiffleV/Very-Bad-2D-Platformer
 cd ./Very-Bad-2D-Platformer
