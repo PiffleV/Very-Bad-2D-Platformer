@@ -1,6 +1,6 @@
 # Information
 Just a project I made for CS1
-Don't expect this game to be good, it was make 
+Don't expect this game to be good, it was made in like 2 weeks
 
 ## Installation
 If you don't have git or python you should probably get that
